@@ -1,0 +1,26 @@
+a)
+Times and number of boxes for N = 100000
+time:2.669 -- n_boxes:1068328
+time:1.479 -- n_boxes:1138261
+time:3.993 -- n_boxes:1178064
+Mean time: 2.7136666666666667
+
+Times and number of boxes for N = 1000000
+time:142.658- n_boxes:15226821
+time:651.065- n_boxes:14503706
+time:284.62- n_boxes:13229841
+Mean time: 359.4476666666667
+
+
+c) 
+T=10
+mean:5.296399999999999 -- stddev:2.9635337090109917
+
+T=100
+mean:6.630649999999998 -- stddev:4.137907772636853
+
+T=1000
+mean:3.136797999999996 -- stddev:2.4632696061024975
+
+
+
