@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5e5fb8bf-dd9d-428c-b8ae-66ed2cb16d66" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Reiknirit-S1/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Reiknirit-S1/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Reiknirit-S1/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Reiknirit-S1/.idea/libraries/algs4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Reiknirit-S1/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Reiknirit-S1/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Reiknirit-S1/Reiknirit-S1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Reiknirit-S1/Reiknirit-S1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Reiknirit-S1/algs4.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Reiknirit-S1/out/production/Reiknirit-S1/PercolationVisualizer.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Reiknirit-S1/out/production/Reiknirit-S1/PercolationVisualizer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Reiknirit-S1/out/production/Reiknirit-S1/com/company/Percolation.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Reiknirit-S1/out/production/Reiknirit-S1/com/company/Percolation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Reiknirit-S1/src/com/company/Percolation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Reiknirit-S1/src/com/company/Percolation.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1hKT7QPLUPmet6lmxFtOuRIyX0o" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/PercolationVisualizer.java" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="restartRequiresConfirmation" value="false" />
+  </component>
+  <component name="RunManager" selected="Java Scratch.PercolationVisualizer">
+    <configuration name="Percolation" type="Java Scratch">
+      <option name="MAIN_CLASS_NAME" value="com.company.Percolation" />
+      <module name="Reiknirit-S1" />
+      <option name="SCRATCH_FILE_URL" value="file://$PROJECT_DIR$/src/com/company/Percolation.java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PercolationVisualizer" type="Java Scratch">
+      <option name="MAIN_CLASS_NAME" value="PercolationVisualizer" />
+      <module name="Reiknirit-S1" />
+      <option name="SCRATCH_FILE_URL" value="file://$PROJECT_DIR$/src/PercolationVisualizer.java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Java Scratch.Percolation" />
+      <item itemvalue="Java Scratch.PercolationVisualizer" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5e5fb8bf-dd9d-428c-b8ae-66ed2cb16d66" name="Default Changelist" comment="" />
+      <created>1599758617311</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1599758617311</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="454" y="212" width="1084" height="762" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599762553635">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state x="454" y="212" width="1084" height="762" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.29.1848.1051@72.29.1848.1051" timestamp="1599762553635" />
+    <state x="779" y="312" width="735" height="491" key="FileChooserDialogImpl" timestamp="1599762549251">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state x="779" y="312" width="735" height="491" key="FileChooserDialogImpl/72.29.1848.1051@72.29.1848.1051" timestamp="1599762549251" />
+    <state width="1802" height="275" key="GridCell.Tab.0.bottom" timestamp="1599763640325">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state width="1802" height="275" key="GridCell.Tab.0.bottom/72.29.1848.1051@72.29.1848.1051" timestamp="1599763640325" />
+    <state width="1802" height="275" key="GridCell.Tab.0.center" timestamp="1599763640325">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state width="1802" height="275" key="GridCell.Tab.0.center/72.29.1848.1051@72.29.1848.1051" timestamp="1599763640325" />
+    <state width="1802" height="275" key="GridCell.Tab.0.left" timestamp="1599763640324">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state width="1802" height="275" key="GridCell.Tab.0.left/72.29.1848.1051@72.29.1848.1051" timestamp="1599763640324" />
+    <state width="1802" height="275" key="GridCell.Tab.0.right" timestamp="1599763640325">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state width="1802" height="275" key="GridCell.Tab.0.right/72.29.1848.1051@72.29.1848.1051" timestamp="1599763640325" />
+    <state width="1802" height="339" key="GridCell.Tab.1.bottom" timestamp="1599759059674">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state width="1802" height="339" key="GridCell.Tab.1.bottom/72.29.1848.1051@72.29.1848.1051" timestamp="1599759059674" />
+    <state width="1802" height="339" key="GridCell.Tab.1.center" timestamp="1599759059674">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state width="1802" height="339" key="GridCell.Tab.1.center/72.29.1848.1051@72.29.1848.1051" timestamp="1599759059674" />
+    <state width="1802" height="339" key="GridCell.Tab.1.left" timestamp="1599759059673">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state width="1802" height="339" key="GridCell.Tab.1.left/72.29.1848.1051@72.29.1848.1051" timestamp="1599759059673" />
+    <state width="1802" height="339" key="GridCell.Tab.1.right" timestamp="1599759059674">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state width="1802" height="339" key="GridCell.Tab.1.right/72.29.1848.1051@72.29.1848.1051" timestamp="1599759059674" />
+    <state x="479" y="132" width="1024" height="852" key="SettingsEditor" timestamp="1599758805435">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state x="479" y="132" width="1024" height="852" key="SettingsEditor/72.29.1848.1051@72.29.1848.1051" timestamp="1599758805435" />
+    <state x="660" y="252" key="run.anything.popup" timestamp="1599759824659">
+      <screen x="72" y="29" width="1848" height="1051" />
+    </state>
+    <state x="660" y="252" key="run.anything.popup/72.29.1848.1051@72.29.1848.1051" timestamp="1599759824659" />
+  </component>
+</project>
