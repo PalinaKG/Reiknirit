@@ -55,9 +55,8 @@ public class Percolation {
 
     public void open(int row, int col) {
     // Opens the site at row,col
-        if (row > size-1 || col > size-1 || col < 0 || row < 0) {
+        if ((row > (size-1)) || (col > (size-1)) || (col < 0) || (row < 0)) {
             throw new java.lang.IndexOutOfBoundsException();
-            //System.out.println("HELL");
         }
         else if (grid[row][col] == 0) {   // if blocked
             int number;
@@ -65,53 +64,60 @@ public class Percolation {
             flowGrid[row * size + col] = min;    // points at itself in the beginning
             boolean fullOrOpen;
 
-
+            //Checking all sites around, to find the lowest number
             fullOrOpen = withinBounds(row - 1, col);
             if (fullOrOpen) {
                 number = flowGrid[(row - 1) * size + col];   // takes the pointer at the location
-
                 if (min > number) {    // if pointer is lower than at it self
                     min = number;
-                } else {
-                    flowGrid[number] = min;   // otherwise then the lowest index at current union takes points at the min
-                    //checkAll(number, min);     // change every pointer in the union to min
                 }
             }
-
-
             fullOrOpen = withinBounds(row, col + 1);
             if (fullOrOpen) {
                 number = flowGrid[row * size + (col + 1)];
-
                 if (min > number) {
                     min = number;
-                } else {
-                    flowGrid[number] = min;
-                    //checkAll(number, min);
                 }
             }
-
             fullOrOpen = withinBounds(row, col - 1);
             if (fullOrOpen) {
                 number = flowGrid[row * size + col - 1];
                 if (min > number) {
                     min = number;
-                } else {
-                    flowGrid[number] = min;
-                    //checkAll(number, min);
                 }
             }
-
             fullOrOpen = withinBounds(row + 1, col);
             if (fullOrOpen) {
                 number = flowGrid[(row + 1) * size + col];
                 if (min > number) {
                     min = number;
-                } else {
-                    flowGrid[number] = min;
-                    //checkAll(number, min);
                 }
             }
+
+
+            //Checking all sites around and saving the new min
+            fullOrOpen = withinBounds(row - 1, col);
+            if (fullOrOpen) {
+                number = flowGrid[(row - 1) * size + col];   // takes the pointer at the location
+                flowGrid[number] = min;   //  the lowest index at current union takes points at the min
+            }
+            fullOrOpen = withinBounds(row, col + 1);
+            if (fullOrOpen) {
+                number = flowGrid[row * size + (col + 1)];
+
+                flowGrid[number] = min;
+            }
+            fullOrOpen = withinBounds(row, col - 1);
+            if (fullOrOpen) {
+                number = flowGrid[row * size + col - 1];
+                flowGrid[number] = min;
+            }
+            fullOrOpen = withinBounds(row + 1, col);
+            if (fullOrOpen) {
+                number = flowGrid[(row + 1) * size + col];
+                flowGrid[number] = min;
+            }
+
             NOpen += 1;  // update number of open sites
 
 
@@ -123,9 +129,6 @@ public class Percolation {
             else {
                 grid[row][col]=1;
             }
-        }
-        else {
-            System.out.println("This site is already open");
         }
     }
 
@@ -140,18 +143,11 @@ public class Percolation {
 
     public void checkAll() {
     // Updates the whole union from previous index to current index
-        //boolean flow=num<size && prevNum>size;
-        /*System.out.println(size);
-        System.out.println(num);
-        System.out.println(prevNum);
-        System.out.println(flowGrid[6]);*/
         for (int i = 0; i < size * size; i++) {
-            if (flowGrid[i]!=25) {
+            if (flowGrid[i]!=size*size) {
                 if ((flowGrid[i] != flowGrid[flowGrid[i]]) || i != flowGrid[i]) {
                     flowGrid[i] = flowGrid[flowGrid[i]];
                     if (flowGrid[i] < size) {
-                        System.out.println(i / size + " - " + i % size);
-
                         grid[i / size][i % size] = 2;
                     }
                 }
@@ -162,9 +158,10 @@ public class Percolation {
 
     public boolean isOpen(int row, int col) {
     // Returns true if site at (row,col) is within boundaries and is open
-        if (row > size-1 || col > size-1 || col < 0 || row < 0) {
+        if ((row > (size-1)) || (col > (size-1)) || (col < 0) || (row < 0)) {
             throw new java.lang.IndexOutOfBoundsException();
-        } else if (grid[row][col] == 1) {
+        }
+        else if (grid[row][col] > 0) {
             return true;
         } else return false;
     }
@@ -172,9 +169,10 @@ public class Percolation {
 
     public boolean isFull(int row, int col) {
     // Returns true if site at (row,col) is within boundaries and is full
-        if (row > size-1 || col > size-1 || col < 0 || row < 0) {
+        if ((row > (size-1)) || (col > (size-1)) || (col < 0) || (row < 0)) {
             throw new java.lang.IndexOutOfBoundsException();
-        } else if (grid[row][col] == 2) {
+        }
+        else if (grid[row][col] == 2) {
             return true;
         } else return false;
     }

@@ -24,7 +24,7 @@ import edu.princeton.cs.algs4.StdDraw;
 public class PercolationVisualizer {
 
     // delay in miliseconds (controls animation speed)
-    private static final int DELAY = 100;
+    private static final int DELAY = 1;
 
     // draw n-by-n percolation system
     public static void draw(Percolation percolation, int n) {
@@ -79,11 +79,27 @@ public class PercolationVisualizer {
             draw(percolation, n);
             StdDraw.show();
             StdDraw.pause(DELAY);
+            /*if (percolation.numberOfOpenSites()==154)
+            {
+                percolation.print_grid();
+
+            }
+            if (percolation.numberOfOpenSites()==155)
+            {
+                percolation.print_grid();
+                break;
+
+            }
+            if (percolation.numberOfOpenSites()>160) {
+                percolation.print_grid();
+                break;
+            }*/
         }
     }
 
     public static void main(String[] args) {
-        String filename = args[0];
+        //String filename = args[0];
+        String filename = "TextFile.txt";
         simulateFromFile(filename);
     }
 }
