@@ -5,10 +5,12 @@ import edu.princeton.cs.algs4.Out;
 
 import java.util.Arrays;
 
+public class Fast2 {
 
-public class Fast {
+    public Fast2(int N, int[] data){
 
-    public Fast(int N, int[] data){
+        String[] results = new String[4];
+        int counter_results = 1;
 
         // Initialize and read in N many data points into org_arr  (original array)
         Point[] org_arr = new Point[N];
@@ -18,7 +20,8 @@ public class Fast {
             counter++;
         }
 
-        Arrays.sort(org_arr);  // sort array according to the coordinate system -- O(N log(N))
+
+        Arrays.sort(org_arr);  // sort array according to the coordinate system
 
 
         Point[] arr = new Point[N];
@@ -26,9 +29,8 @@ public class Fast {
 
         for (int i = 0; i<N; i++){     // for each point in the system -- O(N)
 
-            arr = clear_arr(N-origin_index);   // reset array
-            for (int k = origin_index ; k<N; k++){     // copy org_arr to arr except element on and before last origin index -- O(N)
-                    arr[k-origin_index] = org_arr[k];
+            for (int k = 0 ; k<N; k++){     // copy org_arr to arr -- O(N)
+                arr[k] = org_arr[k];
             }
 
             //sort the array by slope compared to the point at the origin index
@@ -41,11 +43,11 @@ public class Fast {
             arr_in_line[0] = origin_point;
 
             int j = 0;
-            int j_limit = N-1-origin_index;  // array length i.e. limit on counter
+            int j_limit = N-2;               // array length i.e. limit on counter
             while (j < j_limit){             // Go through every point in the slope order -- O(N)
                 counter= 2;                  // counting the points have the same slope with the origin
 
-                while ((origin_point.slopeTo(arr[j]) == origin_point.slopeTo(arr[j+1])) ){   // while next 2 points have the same slope
+                while ((origin_point.slopeTo(arr[j]) == origin_point.slopeTo(arr[j+1])) ){   // while next three points have the same slope and j not out of range
 
                     if (counter == 2){  // first in the line
 
@@ -65,23 +67,31 @@ public class Fast {
                     counter++;
                     j++;
 
-                     if (j==j_limit+1){ // if end of array then break
+                    if (j==j_limit+1){ // if end of array then break
                         break;
                     }
+
                 }
 
-
-                if (counter > 3){           // if more than 3 points are found in a line
+                if (counter > 3){
                     Arrays.sort(arr_in_line,0,counter);   // sort array inline
 
                     String result_tmp = arr_to_String(arr_in_line,counter);  // turn to string
 
-                    System.out.println(result_tmp);
 
+                    if (not_in_results(results, counter_results, result_tmp)){   // if not yet found
+                        if (counter_results == results.length ) {                 // if the array isn't big enough then double it's size
+                            results = resize_string_arr(results);
+                        }
+                        results[counter_results-1] = result_tmp;
+                        counter_results++;
 
-                    arr_in_line = clear_arr(8);   // reset array
+                        System.out.println(result_tmp);
+
+                    }
+
+                    arr_in_line = clear_arr(arr_in_line,8);   // reset array
                     arr_in_line[0] = origin_point;
-
 
                 }
 
@@ -94,7 +104,7 @@ public class Fast {
 
 
     private Point[] resize_point(Point[]arr){
-        // Doubles the capacity of arr and copies its element to it
+        // Doubles the capacity of Point[] arr and copies its element to it
         Point[] new_arr = new Point [arr.length*2];  // doubles the array capacity
         for (int i = 0; i<arr.length; i++){
             new_arr[i] = arr[i];
@@ -103,12 +113,20 @@ public class Fast {
     }
 
 
-    private Point[] clear_arr(int N){
+    private Point[] clear_arr(Point[]arr,int N){
         // Returns clean new N long Point class array
         Point[] new_arr = new Point [N];
         return new_arr;
     }
 
+    private String[] resize_string_arr(String[]arr){
+        // Doubles the capacity of String[] arr and copies its element to it
+        String[] new_arr = new String [arr.length*2];  // doubles the array capacity
+        for (int i = 0; i<arr.length; i++){
+            new_arr[i] = arr[i];
+        }
+        return new_arr;
+    }
 
     private String arr_to_String(Point[]arr, int count){
         // Return the coordinates of Points classes in arr to desired format "(x1,y1) -> (x2,y2) -> ..."
@@ -120,13 +138,26 @@ public class Fast {
             else{
                 str += arr[i].toString();
             }
+
         }
         return str;
     }
 
 
+    private boolean not_in_results(String[]results_arr, int count, String tmp_str){
+        // Returns true if tmp_str is not in results_arr otherwise false
+        for( int i = 0; i<count-1; i++){
+            if (results_arr[i].equals(tmp_str)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
     public static void main(String[] args) {
-	// read in from input and put them through Fast class
+        // read in from input and put them through Fast class
         In in = new In();
         Out out = new Out();
         int n = in.readInt();
@@ -135,6 +166,6 @@ public class Fast {
         for (int i = 0; i < 2*n; i++) {
             data[i]=in.readInt();
         }
-        Fast f = new Fast(n,data);
+        Fast2 f = new Fast2(n,data);
     }
 }

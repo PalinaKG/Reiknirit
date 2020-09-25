@@ -25,8 +25,12 @@ public class Point implements Comparable<Point> {
         public int compare(Point o1, Point o2) {
             double slope1=slopeTo(o1);
             double slope2=slopeTo(o2);
+
             return Double.compare(slope1,slope2);
         }
+
+
+
     };
 
     // create the point (x, y)
@@ -54,10 +58,16 @@ public class Point implements Comparable<Point> {
         double thatX=that.x;
         double thatY=that.y;
         double slope=(thisY-thatY)/(thisX-thatX);
-        if (slope==-Infinity)
-        {
-            slope=Infinity;
+        if ((thisX == thatX) & (thisY == thatY) ){  // same point
+            slope = -Infinity;
         }
+        else if (thisX==thatX){   // vertical line
+            slope = Infinity;
+        }
+        else if (thisY == thatY){  // horizontal line
+            slope = 0;
+        }
+
         return slope;
     }
 
@@ -76,8 +86,11 @@ public class Point implements Comparable<Point> {
                 return 1;
             }
         }
-        else if (this.y==that.y) {
-            if (this.x<that.x)
+        else{
+            if (this.x == that.x){
+                return 0;
+            }
+            else if (this.x<that.x)
             {
                 return -1;
             }
@@ -86,7 +99,6 @@ public class Point implements Comparable<Point> {
                 return 1;
             }
         }
-        else return 0;
     }
 
     // return string representation of this point
@@ -117,6 +129,7 @@ public class Point implements Comparable<Point> {
         }
         out.printf("Testing SLOPE_ORDER comparator...\n");
         for (int i = 2; i < points.length; i++) {
+            out.println(points[i].toString() + points[i-1].toString() + points[i-2].toString() );
             out.println(points[i].SLOPE_ORDER.compare(points[i - 1],
                     points[i - 2]));
         }

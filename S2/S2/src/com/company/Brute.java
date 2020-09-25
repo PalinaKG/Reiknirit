@@ -3,6 +3,8 @@ package com.company;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Insertion;
 import edu.princeton.cs.algs4.Out;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.Stopwatch;
 
 
 
@@ -11,30 +13,24 @@ public class Brute {
     public Brute(int N, int[] data) {
         Point a[] = new Point[N];
         int counter=0;
+        //Array is made with instances of the Point class
         for (int i=0;i<(2*N);i=i+2) {
             a[counter] = new Point(data[i],data[i+1]);
             counter++;
         }
-        sort(a,0,N-1);
-        //for (int i=0;i<N;i++) {
-         //   System.out.println(data[i]);
-        //}
+        Insertion.sort(a);
 
+        //All the points are compared to each other, 4 at a time
         for (int i=0;i<(N-3);i++) {
             for (int j=i+1;j<(N-2);j++) {
                 for (int k=j+1;k<(N-1);k++) {
                     for (int l=k+1;l<N;l++) {
-                        //System.out.println("i: "+ i + " " + data[i] + " " + data[i+1]);
-                        //System.out.println("j: "+ j + " " + data[j] + " " + data[j+1]);
-                        //System.out.println("k: "+ k + " " + data[k] + " " + data[k+1]);
-                        //System.out.println("l: "+ l + " " + data[l] + " " + data[l+1]);
                         Point p = a[i];
                         Point q = a[j];
                         Point r = a[k];
                         Point s = a[l];
-
-                        boolean coll = collinear(p, q, r, s);
-                        if (coll) {
+                        boolean coll = collinear(p, q, r, s); //checking if collinear
+                        if (coll) { //If they are collinear, they are printed out
                             printColl(p, q, r, s);
                         }
                     }
@@ -44,79 +40,34 @@ public class Brute {
     }
 
     public void printColl(Point p, Point q, Point r, Point s) {
-        System.out.println(p.toString() + "->" + q.toString() + "->" + r.toString() + "->"  + s.toString() );
+        Point a[] = new Point[4];
+        a[0]=p;
+        a[1]=q;
+        a[2]=r;
+        a[3]=s;
+        Insertion.sort(a);
+        System.out.println(a[0].toString() + " -> " + a[1].toString() + " -> " + a[2].toString() + " -> "  + a[3].toString() );
     }
 
 
     public boolean collinear(Point p, Point q, Point r, Point s) {
-
-        double pq = p.slopeTo(q);
-        double pr = p.slopeTo(r);
-        double ps = p.slopeTo(s);
-        if ((pq==pr)&&(pq==ps)&&(ps==pr)){
+        double pq_pr = p.SLOPE_ORDER.compare(q,r); //The comparator used to compare the slopes
+        double pq_ps = p.SLOPE_ORDER.compare(q,s);
+        double pr_ps = p.SLOPE_ORDER.compare(q,s);
+        if ((pq_pr==0)&&(pq_ps==0)&&(pr_ps==0)){ //==0 means that the slopes are equal
             return true;
         }
         return false;
     }
 
-    public static int partition(Point[] a, int lo, int hi)
-    {
-        boolean bool=true;
-        int com=0;
-        int i = lo, j = hi+1;
-        while (true)
-        {
-            while (bool)
-                System.out.println(a[++i]);
-                System.out.println(a[lo]);
-                com=a[++i].compareTo(a[lo]);
 
-                if (com==1)
-                {
-                    bool=true;
-                }
-                
-                if (i == hi) break;
-
-            while (bool)
-                com=a[lo].compareTo(a[--j]);
-                if (com==1)
-                {
-                    bool=true;
-                }
-                if (j == lo) break;
-            if (i >= j) break;
-            exch(a, i, j);
-        }
-        exch(a, lo, j);
-        return j;
-    }
-
-    private static void exch(Point[] a, int i, int j) {
-        Point swap = a[i];
-        a[i] = a[j];
-        a[j] = swap;
-    }
-
-
-    public static void sort(Point[]a, int lo, int hi)
-    {
-        int cutoff=10;
-        if (hi <= lo + cutoff - 1)
-        {
-            Insertion.sort(a, lo, hi);
-            return;
-        }
-        int j = partition(a, lo, hi);
-        sort(a, lo, j-1);
-        sort(a,j+1, hi);
-    }
 
     public static void main(String[] args) {
-	// write your code here
+        // write your code here
         In in = new In();
         Out out = new Out();
         int n = in.readInt();
+        //int n=150;
         Point[] points = new Point[n];
         int[] data = new int[2*n];
         for (int i = 0; i < 2*n; i++) {
@@ -124,4 +75,21 @@ public class Brute {
         }
         Brute brute=new Brute(n,data);
     }
+
+   /* public static void main(String[] args) {   // for monte carlo time test thing
+        // write your code here
+        Stopwatch t = new Stopwatch();
+        In in = new In();
+        Out out = new Out();
+        //int n = in.readInt();
+        int n=800;
+        Point[] points = new Point[n];
+        int[] data = new int[2*n];
+        for (int i = 0; i < 2*n; i++) {
+            data[i]=StdRandom.uniform(50);
+        }
+        Brute brute=new Brute(n,data);
+
+        System.out.println("TIME: " + t.elapsedTime());
+    }*/
 }
