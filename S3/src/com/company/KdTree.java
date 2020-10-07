@@ -4,7 +4,6 @@
 package com.company;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.lang.Math;
 import java.util.Collections;
 
 import edu.princeton.cs.algs4.*;
@@ -16,7 +15,6 @@ public class KdTree {
     Point2D nearest_point;
     double nearest_len;
 
-    int contSize=0;
 
     class Node {
         Point2D data, upper_point, lower_point;
@@ -24,15 +22,16 @@ public class KdTree {
         Node l_child;
 
         Node(Point2D data_value, Node leftChild, Node rightChild, Point2D upper, Point2D lower) {
-            data = data_value;
+            data = data_value;           // point2D
             l_child = leftChild;
             r_child = rightChild;
-            upper_point = upper;
-            lower_point = lower;
+            upper_point = upper;         // upper limit of this nodes line
+            lower_point = lower;         // lower    --  //   --
         }
     }
 
     public KdTree() {
+        // Initializing
         root = new Node(null, null, null, null, null);
         size = 0;
     }
@@ -54,23 +53,17 @@ public class KdTree {
     public void insert(Point2D p) {
         double[] x_values = {0, 1};
         double[] y_values = {0, 1};
-        if (size == 0) {
+        if (size == 0) {            // if the set is empty
             root.data = p;
             root.lower_point = new Point2D(root.data.x(), y_values[0]);
             root.upper_point = new Point2D(root.data.x(), y_values[1]);
             size=1;
-        } else {
-            if (!contains(p))
-            {
+        }
+        else {
+            if (!contains(p)) {     // if it doesn't contain the point already
                 int counter = 0;
-                insert_to_tree(p, root, counter, x_values, y_values, true);
-                //StdOut.println(root.l_child.data);
+                insert_to_tree(p, root, counter, x_values, y_values);
                 size++;
-            }
-            else
-            {
-                contSize++;
-                //StdOut.println("CONTSIZE: "+contSize);
             }
 
 
@@ -79,71 +72,62 @@ public class KdTree {
 
     ;
 
-    private void insert_to_tree(Point2D insert_p, Node cur_p, int counter, double[] x_values, double[] y_values, boolean ifLeft) {
-        double cur_point = 0;
-        double insert_point = 0;
-        //StdOut.println("INSERT_P: "+insert_p);
-        //StdOut.println("CUR_P: "+cur_p.data);
+    private void insert_to_tree(Point2D insert_p, Node cur_p, int counter, double[] x_values, double[] y_values) {
 
         counter++;
-        //StdOut.println("SIZE: "+size);
-        //StdOut.println("COUNTER: "+counter);
-        //StdOut.print(cur_p.data + "-->");
-        if (counter % 2 == 0) {
-            cur_point = cur_p.data.y(); //Comaring y values if counter is odd
+
+        double cur_point = 0.0;             // relevant coordinate from cur_p to to its position (vertical or horizontal)
+        double insert_point = 0.0;          //   --     //     --       insert_p     --  //   --
+
+        if (counter % 2 == 0) {       // if the node is vertical i.e. red then we look at the y coordinates
+            cur_point = cur_p.data.y();
             insert_point = insert_p.y();
 
-        } else {
-            cur_point = cur_p.data.x(); //Comparing x values if counter is even
+        } else {                      // otherwise horizontal and we look at the x coordinates
+            cur_point = cur_p.data.x();
             insert_point = insert_p.x();
         }
 
-        //StdOut.println("INSERT_POINT: " + insert_point + " CURRENT_POINT: " + cur_point);
+        Point2D first_point, second_point;  // upper and lower limit of the line of the node
 
-        if (insert_point < cur_point) {
-            if (cur_p.l_child != null) {
-                insert_to_tree(insert_p, cur_p.l_child, counter, x_values, y_values, true);
-            } else {
-                Point2D first_point, second_point;
-                if (counter % 2 == 0) {
-                    y_values[1] = cur_p.data.y();
-                    //StdOut.println("y1: " + y_values[1]);
-                    first_point = new Point2D(insert_p.x(), y_values[0]);
-                    second_point = new Point2D(insert_p.x(), y_values[1]);
-                } else {
-                    x_values[1] = cur_p.data.x();
-                    //StdOut.println("x1: " + x_values[1]);
-                    first_point = new Point2D(x_values[0], insert_p.y());
-                    second_point = new Point2D(x_values[1], insert_p.y());
-                }
-                //StdOut.println("FIRST: " + first_point);
-                //StdOut.println("SECOND: " + second_point);
-                cur_p.l_child = new Node(insert_p, null, null, first_point, second_point);
-                //StdOut.println(" LEFT CHILD: " + cur_p.l_child.data + " UPPER: " + cur_p.l_child.upper_point + " LOWER: " + cur_p.l_child.lower_point);
+        if (insert_point < cur_point) {     // if on the left side
+            if (counter % 2 == 0) {         // node line is vertical
+                y_values[1] = cur_p.data.y();   // update upper limit on y
 
+                // create both upper and lower limit
+                first_point = new Point2D(insert_p.x(), y_values[0]);
+                second_point = new Point2D(insert_p.x(), y_values[1]);
+
+            } else {   // node line is horizontal
+                x_values[1] = cur_p.data.x();  // update upper limit on x
+                first_point = new Point2D(x_values[0], insert_p.y());
+                second_point = new Point2D(x_values[1], insert_p.y());
             }
 
-        } else {
-            if (cur_p.r_child != null) {
-                insert_to_tree(insert_p, cur_p.r_child, counter, x_values, y_values, false);
-            } else {
-                Point2D first_point, second_point;
-                if (counter % 2 == 0) {
+            if (cur_p.l_child != null) {     // if there is already a node on the left side of the cur_p
+                insert_to_tree(insert_p, cur_p.l_child, counter, x_values, y_values);   // recurr
 
-                    y_values[0] = cur_p.data.y();
-                    //StdOut.println("y0: " + y_values[0]);
-                    first_point = new Point2D(insert_p.x(), y_values[0]);
-                    second_point = new Point2D(insert_p.x(), y_values[1]);
-                } else {
-                    x_values[0] = cur_p.data.x();
-                    //StdOut.println("x0: " + x_values[0]);
-                    first_point = new Point2D(x_values[0], insert_p.y());
-                    second_point = new Point2D(x_values[1], insert_p.y());
-                }
-                //StdOut.println("FIRST: " + first_point);
-                //StdOut.println("SECOND: " + second_point);
+            } else {     // otherwise create new node for point insert_p on the left side of cur_p
+                cur_p.l_child = new Node(insert_p, null, null, first_point, second_point);
+            }
+
+        } else {        // otherwise on right side
+            if (counter % 2 == 0) {   // node line is vertical
+                y_values[0] = cur_p.data.y();     // update lower limit on y
+                first_point = new Point2D(insert_p.x(), y_values[0]);
+                second_point = new Point2D(insert_p.x(), y_values[1]);
+
+            } else {       // node line is horizontal
+                x_values[0] = cur_p.data.x();   // update lower limit on x
+                first_point = new Point2D(x_values[0], insert_p.y());
+                second_point = new Point2D(x_values[1], insert_p.y());
+            }
+
+            if (cur_p.r_child != null) {   // if already a node on the right child of cur_p
+                insert_to_tree(insert_p, cur_p.r_child, counter, x_values, y_values);
+
+            } else {        // otherwise create node with point insert_p on the right side of cur_p
                 cur_p.r_child = new Node(insert_p, null, null, first_point, second_point);
-                //StdOut.println(" RIGHT CHILD: " + cur_p.r_child.data + " UPPER: " + cur_p.r_child.upper_point + " LOWER: " + cur_p.r_child.lower_point);
             }
         }
 
@@ -162,34 +146,29 @@ public class KdTree {
     private boolean contains_recur(Point2D p, Node cur_p, int counter) {
         double cur_point = 0;
         double insert_point = 0;
-        //double other_cur_point=0;
-        //double other_insert_point=0;
-        if (counter % 2 == 0) {
+
+        if (counter % 2 == 0) {             // if the node is vertical i.e. red then we look at the x coordinates
             cur_point = cur_p.data.x();
             insert_point = p.x();
-            //other_cur_point=cur_p.data.y();
-            //other_insert_point=p.y();
-        } else {
+        } else {                            // otherwise horizontal and we look at the y coordinates
             cur_point = cur_p.data.y();
             insert_point = p.y();
-            //other_cur_point=cur_p.data.x();
-            //other_insert_point=p.x();
         }
         counter++;
 
-        if (p.equals(cur_p.data)) {
+        if (p.equals(cur_p.data)) {         // if it found the point
             return true;
-        } else if (insert_point < cur_point) {
+        } else if (insert_point < cur_point) {      // else if the point has smaller value than the current point
 
             if (cur_p.l_child != null) {
-                return contains_recur(p, cur_p.l_child, counter);
+                return contains_recur(p, cur_p.l_child, counter); // go to left if is non-null
             } else {
-                return false;
+                return false;               // if null then it was unsuccessful
             }
 
-        } else {
+        } else {                                    // otherwise it is greater or equal
             if (cur_p.r_child != null) {
-                return contains_recur(p, cur_p.r_child, counter);
+                return contains_recur(p, cur_p.r_child, counter);  // go right if non-null
             } else {
                 return false;
             }
@@ -205,27 +184,28 @@ public class KdTree {
     }
 
     private int draw_recur(Node p, int counter) {
-        StdOut.println(p);
 
         if (p == null) {
             return 0;
         }
-        StdOut.println(p.data);
-        StdOut.println(p.upper_point + "    " + p.lower_point);
-        if (counter % 2 == 0) {
+        if (counter % 2 == 0) {                 // red if it is vertical
             StdDraw.setPenColor(StdDraw.RED);
 
-        } else {
+        } else {                                // otherwise blue
             StdDraw.setPenColor(StdDraw.BLUE);
         }
         counter++;
-        p.upper_point.drawTo(p.lower_point);
+        p.upper_point.drawTo(p.lower_point);    // draw between the points
 
+        // Draw the point itself
         StdDraw.setPenColor(StdDraw.BLACK);
         p.data.draw();
+
+        // recurr to both sides
         draw_recur(p.l_child, counter);
         draw_recur(p.r_child, counter);
-        //StdDraw.show();
+
+        StdDraw.show(); // display results
         return 0;
     }
 
@@ -245,111 +225,105 @@ public class KdTree {
         }
         counter++;
         double min, max, cur_point;
-        if (counter % 2 == 0) {
-            cur_point = p.data.x(); //Comparing x values if counter is even
+        if (counter % 2 == 0) {     // if the node is vertical i.e. red then we look at the x coordinates
+            cur_point = p.data.x();
             min = rect.xmin();
             max = rect.xmax();
-        } else {
-            cur_point = p.data.y(); //Comaring y values if counter is odd
+        } else {                    // other wise it is horizontal then we look at the y coordinates
+            cur_point = p.data.y();
             min = rect.ymin();
             max = rect.ymax();
         }
-        if (rect.contains(p.data)) {
+
+        if (rect.contains(p.data)) {   // add the point to the set if it is in the rectangle range
             set.add(p.data);
         }
 
-        if (min < cur_point) {
-            range_recur(p.l_child, set, counter, rect);
+        if (min < cur_point) {          // if left / lower side of the rectangle is at the left side of the point
+            range_recur(p.l_child, set, counter, rect); // check left side
         }
-        if (max > cur_point) {
-            range_recur(p.r_child, set, counter, rect);
+        if (max >= cur_point) {         // if right / upper side of the rectangle is on or at the right side of the point
+            range_recur(p.r_child, set, counter, rect); // check right side
         }
         return set;
     }
 
     // a nearest neighbor in the set to p; null if set is empty
     public Point2D nearest(Point2D p) {
-        nearest_point = root.data;
-        if (root.data == null) {
-            return nearest_point;
-        } else {
+
+        nearest_point = root.data;  // is null if there is no data in the tree
+        if (root.data != null) {   // if there is data in the tree
             int counter = -1;
-            nearest_len = p.distanceTo(nearest_point);
+            nearest_len = p.distanceSquaredTo(nearest_point);    // initializing nearest length
             nearest_recur(p, root, counter);
-            //StdOut.println("Nearest point after function : "+nearest_point);
-
-            return nearest_point;
-
-
-
         }
 
+        return nearest_point;
     }
 
     private void nearest_recur(Point2D p, Node cur_p, int counter) {
-        //if (cur_p == null) {
-         //   return nearest_point;
-        //}
-        //StdOut.println("NEAREST_POINT: "+nearest_point + "     NEAREST_LEN: "+nearest_len);
-        // StdOut.println("POINT1: "+cur_p);
-        if (cur_p != null) {
-            // StdOut.println("POINT1: "+counter);
+        // Finding the closest point in the tree to query point p recursively
+
+        if (cur_p != null) {        // as long as there is a current point
+
             counter++;
-            double new_len = cur_p.data.distanceTo(p);
-            //StdOut.println("NEW_LEN: "+new_len);
-            //StdOut.println("NEW_POINT: "+cur_p.data);
-            //StdOut.println("NEAREST_LEN: "+nearest_len);
-            //StdOut.println("Query point: "+ p  +"-- NEAREST_POINT: "+nearest_point+ " with len "+nearest_len +" - vs - "+ cur_p.data + "  with len: "+ new_len);            
-            
-            
-            if (new_len < nearest_len) {
-                //StdOut.println("UPDATING NEAREST_POINT TO: "+ cur_p.data);
-                nearest_len = new_len;
-                nearest_point = cur_p.data;
+            double new_len = cur_p.data.distanceSquaredTo(p);  // find length from current point to query point
+
+            if (new_len < nearest_len) {                        // if current point is closer to query point
+                nearest_len = new_len;                          // than the nearest_point then update
+                nearest_point = cur_p.data;                     // nearest length and nearest point
             }
-            double point, cmp_point0, cmp_point1, other_point, calc_len;
-            if (counter % 2 == 0) {
-                point = p.y(); //Comparing x values if counter is even
-                calc_len = p.x();
+            double q_coord,q_coord_other; ;         // relative query coordinates for this nodes rotation (vertical or horizontal)
+            double cmp_point0, cmp_point1;          // upper and lower limit of current point relative to its position
+            double coord;                           // relative coordinate from current point to its position
+            if (counter % 2 == 0) {                             // if the node has a vertical line i.e. red
+                q_coord = p.y();
+                q_coord_other = p.x();
+                coord = cur_p.data.x();
                 cmp_point0 = cur_p.lower_point.y();
                 cmp_point1 = cur_p.upper_point.y();
-                other_point = cur_p.data.x();
-            } else {
-                point = p.x(); //Comparing y values if counter is odd
-                calc_len = p.y();
+            }
+            else {                                              // if the node has a horizontal line i.e. blue
+                q_coord = p.x();
+                coord = cur_p.data.y();
+                q_coord_other = p.y();
                 cmp_point0 = cur_p.lower_point.x();
                 cmp_point1 = cur_p.upper_point.x();
-                other_point = cur_p.data.y();
             }
-            if ((cmp_point0 > point) && (cmp_point1 > point)) //Checking if
-            {
-                new_len = p.distanceTo(cur_p.lower_point);
-            } else if ((cmp_point0 < point) && (cmp_point1 < point)) {
-                new_len = p.distanceTo(cur_p.upper_point);
-            } else {
-                new_len = Math.abs(calc_len - other_point);
+
+
+            // Calculating distance to the box created by the current node sectioning for the check if it is
+            // worth it to check on the other side of it
+            if ((cmp_point0 > q_coord) && (cmp_point1 > q_coord)) // if the closest point from the query point to the
+            {                                                     // box is on its upper / right corner
+                new_len = p.distanceSquaredTo(cur_p.upper_point);
+
+            } else if ((cmp_point0 < q_coord) && (cmp_point1 < q_coord)) {  // if it is the lower / left corner
+                new_len = p.distanceSquaredTo(cur_p.lower_point);
+
+            } else {                                                        // else it is the side of it
+                new_len = q_coord_other - coord;
+                new_len *= new_len;
             }
-            //StdOut.println("NEW_LEN: " + new_len);
-            //StdOut.println("NEAREST_LEN: "+ nearest_len);
+
+            // Assigning near and far side
             Node near_child, far_child;
-            if (calc_len > other_point) {
-                near_child = cur_p.r_child;
+            if (q_coord_other >= coord) {     // if q_coord_other is on the up / right side of the current position
+                near_child = cur_p.r_child;   // then the right child of current position is near than the left one
                 far_child = cur_p.l_child;
-            } else {
+            } else {                          // otherwise it is the other way around
                 near_child = cur_p.l_child;
                 far_child = cur_p.r_child;
             }
 
-            if ((nearest_len > new_len) && (near_child != null)) {
 
+            // Recursion down the tree
+            nearest_recur(p, near_child, counter);    // Check near side first since it is more likely to contain nearest neighbour
+
+            if (nearest_len > new_len) {              // Check far side if the box is closer than the current nearest length
                 nearest_recur(p, far_child, counter);
             }
-            //StdOut.println("NEAREST_Neighbour far: "+ nearest_point);
 
-            if (near_child != null) {
-                nearest_recur(p, near_child, counter);
-            }
-            //StdOut.println("NEAREST_Neighbour near: "+ nearest_point);
         }
 
 
@@ -358,10 +332,38 @@ public class KdTree {
     /*******************************************************************************
      * Test client
      ******************************************************************************/
-    public static void main(String[] args) {
+
+    /**************    A      *************/
+    /*public static void main(String[] args) {
         In in = new In();
         Out out = new Out();
-        int N = in.readInt(), C = in.readInt(), T = 1;
+        int N = in.readInt(), C = in.readInt(), T = 20;
+        KdTree tree = new KdTree();
+        Point2D [] points = new Point2D[C];
+        out.printf("Inserting %d points into tree\n", N);
+        for (int i = 0; i < N; i++) {
+            tree.insert(new Point2D(in.readDouble(), in.readDouble()));
+        }
+        out.printf("tree.size(): %d\n", tree.size());
+        out.printf("Testing contains method, querying %d points\n", C);
+        for (int i = 0; i < C; i++) {
+            points[i] = new Point2D(in.readDouble(), in.readDouble());
+            out.printf("%s: %s\n", points[i], tree.contains(points[i]));
+        }
+        for (int i = 0; i < T; i++) {
+            for (int j = 0; j < C; j++) {
+                tree.contains(points[j]);
+            }
+        }
+    }*/
+
+
+
+    /**************    B      *************/
+    /*public static void main(String[] args) {
+        In in = new In();
+        Out out = new Out();
+        int N = in.readInt(), C = in.readInt(), T = 50;
         Point2D[] queries = new Point2D[C];
         KdTree tree = new KdTree();
         out.printf("Inserting %d points into tree\n", N);
@@ -373,15 +375,50 @@ public class KdTree {
 
         for (int i = 0; i < C; i++) {
             queries[i] = new Point2D(in.readDouble(), in.readDouble());
-            //out.printf("%s: %s\n", queries[i], tree.nearest(queries[i]));
+            out.printf("%s: %s\n", queries[i], tree.nearest(queries[i]));
         }
-        out.printf("%s: %s\n", queries[30], tree.nearest(queries[30]));
-        /*for (int i = 0; i < T; i++) {
+        for (int i = 0; i < T; i++) {
             for (int j = 0; j < C; j++) {
                 tree.nearest(queries[j]);
             }
-        }*/
+        }
+    }*/
+
+
+    /**************    C      *************/
+    public static void main(String[] args) {
+        In in = new In();
+        Out out = new Out();
+        int N = in.readInt(), R = in.readInt(), T = 800;
+        RectHV[] rectangles = new RectHV[R];
+        KdTree tree = new KdTree();
+        out.printf("Inserting %d points into tree\n", N);
+        for (int i = 0; i < N; i++) {
+            tree.insert(new Point2D(in.readDouble(), in.readDouble()));
+        }
+        out.printf("tree.size(): %d\n", tree.size());
+        out.printf("Testing `range` method, querying %d rectangles\n", R);
+        ArrayList<Point2D> range = new ArrayList<Point2D>();
+        for (int i = 0; i < R; i++) {
+            rectangles[i] = new RectHV(in.readDouble(), in.readDouble(),
+                    in.readDouble(), in.readDouble());
+            out.printf("Points inside rectangle %s\n", rectangles[i]);
+            for (Point2D point : tree.range(rectangles[i])) {
+                range.add(point);
+            }
+            Collections.sort(range);
+            for (Point2D point : range) {
+                out.printf("%s\n", point);
+            }
+            range.clear();
+        }
+        for (int i = 0; i < T; i++) {
+            for (int j = 0; j < rectangles.length; j++) {
+                tree.range(rectangles[j]);
+            }
+        }
     }
+
 }
 
 
