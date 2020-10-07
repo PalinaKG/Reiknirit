@@ -13,6 +13,8 @@ public class KdTree {
     // construct an empty set of points
     Node root;
     int size;
+    Point2D nearest_point;
+    double nearest_len;
 
     int contSize=0;
 
@@ -86,7 +88,7 @@ public class KdTree {
         counter++;
         //StdOut.println("SIZE: "+size);
         //StdOut.println("COUNTER: "+counter);
-        //StdOut.print("-->");
+        //StdOut.print(cur_p.data + "-->");
         if (counter % 2 == 0) {
             cur_point = cur_p.data.y(); //Comaring y values if counter is odd
             insert_point = insert_p.y();
@@ -117,7 +119,7 @@ public class KdTree {
                 //StdOut.println("FIRST: " + first_point);
                 //StdOut.println("SECOND: " + second_point);
                 cur_p.l_child = new Node(insert_p, null, null, first_point, second_point);
-                StdOut.println("PARENT: " + cur_p.data + " LEFT CHILD: " + cur_p.l_child.data + " UPPER: " + cur_p.l_child.upper_point + " LOWER: " + cur_p.l_child.lower_point);
+                //StdOut.println(" LEFT CHILD: " + cur_p.l_child.data + " UPPER: " + cur_p.l_child.upper_point + " LOWER: " + cur_p.l_child.lower_point);
 
             }
 
@@ -141,7 +143,7 @@ public class KdTree {
                 //StdOut.println("FIRST: " + first_point);
                 //StdOut.println("SECOND: " + second_point);
                 cur_p.r_child = new Node(insert_p, null, null, first_point, second_point);
-                StdOut.println("PARENT: " + cur_p.data + " RIGHT CHILD: " + cur_p.r_child.data + " UPPER: " + cur_p.r_child.upper_point + " LOWER: " + cur_p.r_child.lower_point);
+                //StdOut.println(" RIGHT CHILD: " + cur_p.r_child.data + " UPPER: " + cur_p.r_child.upper_point + " LOWER: " + cur_p.r_child.lower_point);
             }
         }
 
@@ -267,75 +269,90 @@ public class KdTree {
 
     // a nearest neighbor in the set to p; null if set is empty
     public Point2D nearest(Point2D p) {
-        Point2D nearest_point = root.data;
+        nearest_point = root.data;
         if (root.data == null) {
             return nearest_point;
         } else {
             int counter = -1;
-            double nearest_len = p.distanceTo(nearest_point);
-            nearest_point = nearest_recur(p, root, nearest_point, counter, nearest_len);
+            nearest_len = p.distanceTo(nearest_point);
+            nearest_recur(p, root, counter);
+            //StdOut.println("Nearest point after function : "+nearest_point);
+
             return nearest_point;
+
+
 
         }
 
     }
 
-    private Point2D nearest_recur(Point2D p, Node cur_p, Point2D nearest_point, int counter, double nearest_len) {
-        if (cur_p == null) {
-            return nearest_point;
-        }
+    private void nearest_recur(Point2D p, Node cur_p, int counter) {
+        //if (cur_p == null) {
+         //   return nearest_point;
+        //}
         //StdOut.println("NEAREST_POINT: "+nearest_point + "     NEAREST_LEN: "+nearest_len);
-        //StdOut.println("POINT1: "+p);
-        counter++;
-        double new_len = cur_p.data.distanceTo(p);
-        //StdOut.println("NEW_LEN: "+new_len);
-        //StdOut.println("NEW_POINT: "+cur_p.data);
-        //StdOut.println("NEAREST_LEN: "+nearest_len);
-        //StdOut.println("NEAREST_POINT: "+nearest_point);
+        // StdOut.println("POINT1: "+cur_p);
+        if (cur_p != null) {
+            // StdOut.println("POINT1: "+counter);
+            counter++;
+            double new_len = cur_p.data.distanceTo(p);
+            //StdOut.println("NEW_LEN: "+new_len);
+            //StdOut.println("NEW_POINT: "+cur_p.data);
+            //StdOut.println("NEAREST_LEN: "+nearest_len);
+            //StdOut.println("Query point: "+ p  +"-- NEAREST_POINT: "+nearest_point+ " with len "+nearest_len +" - vs - "+ cur_p.data + "  with len: "+ new_len);            
+            
+            
+            if (new_len < nearest_len) {
+                //StdOut.println("UPDATING NEAREST_POINT TO: "+ cur_p.data);
+                nearest_len = new_len;
+                nearest_point = cur_p.data;
+            }
+            double point, cmp_point0, cmp_point1, other_point, calc_len;
+            if (counter % 2 == 0) {
+                point = p.y(); //Comparing x values if counter is even
+                calc_len = p.x();
+                cmp_point0 = cur_p.lower_point.y();
+                cmp_point1 = cur_p.upper_point.y();
+                other_point = cur_p.data.x();
+            } else {
+                point = p.x(); //Comparing y values if counter is odd
+                calc_len = p.y();
+                cmp_point0 = cur_p.lower_point.x();
+                cmp_point1 = cur_p.upper_point.x();
+                other_point = cur_p.data.y();
+            }
+            if ((cmp_point0 > point) && (cmp_point1 > point)) //Checking if
+            {
+                new_len = p.distanceTo(cur_p.lower_point);
+            } else if ((cmp_point0 < point) && (cmp_point1 < point)) {
+                new_len = p.distanceTo(cur_p.upper_point);
+            } else {
+                new_len = Math.abs(calc_len - other_point);
+            }
+            //StdOut.println("NEW_LEN: " + new_len);
+            //StdOut.println("NEAREST_LEN: "+ nearest_len);
+            Node near_child, far_child;
+            if (calc_len > other_point) {
+                near_child = cur_p.r_child;
+                far_child = cur_p.l_child;
+            } else {
+                near_child = cur_p.l_child;
+                far_child = cur_p.r_child;
+            }
 
-        if (new_len < nearest_len) {
-            nearest_len = new_len;
-            nearest_point = cur_p.data;
+            if ((nearest_len > new_len) && (near_child != null)) {
+
+                nearest_recur(p, far_child, counter);
+            }
+            //StdOut.println("NEAREST_Neighbour far: "+ nearest_point);
+
+            if (near_child != null) {
+                nearest_recur(p, near_child, counter);
+            }
+            //StdOut.println("NEAREST_Neighbour near: "+ nearest_point);
         }
-        double point, cmp_point0, cmp_point1, other_point, calc_len;
-        if (counter % 2 == 0) {
-            point = p.y(); //Comparing x values if counter is even
-            calc_len = p.x();
-            cmp_point0 = cur_p.lower_point.y();
-            cmp_point1 = cur_p.upper_point.y();
-            other_point = cur_p.data.x();
-        } else {
-            point = p.x(); //Comaring y values if counter is odd
-            calc_len = p.y();
-            cmp_point0 = cur_p.lower_point.x();
-            cmp_point1 = cur_p.upper_point.x();
-            other_point = cur_p.data.y();
-        }
-        if ((cmp_point0 > point) && (cmp_point1 > point)) //Checking if
-        {
-            new_len = p.distanceTo(cur_p.lower_point);
-        } else if ((cmp_point0 < point) && (cmp_point1 < point)) {
-            new_len = p.distanceTo(cur_p.upper_point);
-        } else {
-            new_len = Math.abs(calc_len - other_point);
-        }
-        //StdOut.println("NEW_LEN: " + new_len);
-        //StdOut.println("NEAREST_LEN: "+ nearest_len);
-        Node near_child, far_child;
-        if (calc_len > other_point) {
-            near_child=cur_p.r_child;
-            far_child=cur_p.l_child;
-        }
-        else
-        {
-            near_child=cur_p.l_child;
-            far_child=cur_p.r_child;
-        }
-        if (nearest_len > new_len) {
-            nearest_point = nearest_recur(p, far_child, nearest_point, counter, nearest_len);
-        }
-        nearest_point = nearest_recur(p, near_child, nearest_point, counter, nearest_len);
-        return nearest_point;
+
+
     }
 
     /*******************************************************************************
@@ -344,7 +361,7 @@ public class KdTree {
     public static void main(String[] args) {
         In in = new In();
         Out out = new Out();
-        int N = in.readInt(), C = in.readInt(), T = 50;
+        int N = in.readInt(), C = in.readInt(), T = 1;
         Point2D[] queries = new Point2D[C];
         KdTree tree = new KdTree();
         out.printf("Inserting %d points into tree\n", N);
@@ -356,22 +373,14 @@ public class KdTree {
 
         for (int i = 0; i < C; i++) {
             queries[i] = new Point2D(in.readDouble(), in.readDouble());
-            out.printf("%s: %s\n", queries[i], tree.nearest(queries[i]));
+            //out.printf("%s: %s\n", queries[i], tree.nearest(queries[i]));
         }
-        for (int i = 0; i < T; i++) {
+        out.printf("%s: %s\n", queries[30], tree.nearest(queries[30]));
+        /*for (int i = 0; i < T; i++) {
             for (int j = 0; j < C; j++) {
                 tree.nearest(queries[j]);
             }
-        }
-
-
-        /*tree.draw();
-        StdDraw.setPenRadius(0.03);
-        StdDraw.setPenColor(StdDraw.GREEN);
-        queries[0].draw();
-        queries[1].draw();
-        StdDraw.show();*/
-
+        }*/
     }
 }
 
